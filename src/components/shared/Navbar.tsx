@@ -18,8 +18,8 @@ const Navbar = () => {
       <div className="container lg:flex justify-between items-center mx-auto h-28 lg:h-16 px-3">
         <div className="flex justify-between items-center mb-2">
           <div className="flex items-center">
-            <Image src={logo} alt="Logo" width="50" height="50" />
-            <span className="text-2xl font-semibold ml-1">Next Mart</span>
+            <Image src={logo} alt="Logo" width="60" height="60" />
+            <span className="text-xl font-semibold ml-1">Next Mart</span>
           </div>
 
           <nav className="flex gap-2 lg:hidden">
@@ -53,7 +53,7 @@ const Navbar = () => {
             className="px-4 py-2 border-none bg-white w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-[#693AF8]"
           />
 
-          <Button className="px-4 py-2 bg-[#693AF8] text-white rounded-full hover:bg-[#5726e9] transition">
+          <Button className="px-4 py-2 text-white rounded-full transition">
             <Search />
           </Button>
         </div>
