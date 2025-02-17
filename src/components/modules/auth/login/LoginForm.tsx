@@ -1,5 +1,9 @@
 'use client';
-import { Button } from '@/components/ui/button';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useState } from 'react';
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import logo from '@/assets/icons/logo.svg';
 import {
   Form,
   FormControl,
@@ -9,38 +13,30 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import Image from 'next/image';
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import logo from '@/assets/icons/logo.svg';
-import Link from 'next/link';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { registrationSchema } from './registerValidation';
-import { registerUser } from '@/services/AuthService';
-import { toast } from 'sonner';
-import { useState } from 'react';
+import { Button } from '@/components/ui/button';
 import { Eye, EyeOff } from 'lucide-react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { loginSchema } from './LoginValidation';
+import { Label } from '@/components/ui/label';
 
-const RegisterForm = () => {
+const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const form = useForm({
-    resolver: zodResolver(registrationSchema),
+    resolver: zodResolver(loginSchema),
   });
 
   const {
     formState: { isSubmitting },
   } = form;
 
-  const password = form.watch('password');
-  const passwordConfirm = form.watch('passwordConfirm');
-
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
-      const res = await registerUser(data);
-      if (res.success) {
-        toast.success(res.message);
-      } else {
-        toast.error(res.message);
-      }
+      // const res = await registerUser(data);
+      // if (res.success) {
+      //     toast.success(res.message);
+      // } else {
+      //     toast.error(res.message);
+      // }
     } catch (error: any) {
       console.error(error);
     }
@@ -53,33 +49,14 @@ const RegisterForm = () => {
           <Image src={logo} alt="Logo" width="80" height="80" />
         </Link>
         <div>
-          <h1 className="text-xl font-semibold">Register</h1>
+          <h1 className="text-xl font-semibold">Login</h1>
           <p className="font-extralight text-sm text-gray-500">
-            Join us today and start your journey!
+            Enter your email address to sign in!
           </p>
         </div>
       </div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem className="mb-3">
-                <FormLabel className="text-[#0F0E0E]">Name</FormLabel>
-                <FormControl>
-                  <Input
-                    type="text"
-                    {...field}
-                    value={field.value || ''}
-                    className="bg-white"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
           <FormField
             control={form.control}
             name="email"
@@ -133,50 +110,26 @@ const RegisterForm = () => {
             )}
           />
 
-          <FormField
-            control={form.control}
-            name="passwordConfirm"
-            render={({ field }) => (
-              <FormItem className="mb-3">
-                <FormLabel className="text-[#0F0E0E]">
-                  Confirm Password
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    type="password"
-                    {...field}
-                    value={field.value || ''}
-                    className="bg-white"
-                  />
-                </FormControl>
-                {passwordConfirm && password !== passwordConfirm ? (
-                  <FormMessage> Password does not match </FormMessage>
-                ) : (
-                  <FormMessage />
-                )}
-              </FormItem>
-            )}
-          />
+          <div>
+            <div className="flex items-center space-x-2">
+              <Checkbox id="terms" />
+              <Label htmlFor="terms">Remember Me</Label>
+            </div>
+          </div>
 
-          <Button
-            disabled={
-              (passwordConfirm && password !== passwordConfirm) as boolean
-            }
-            type="submit"
-            className="w-full mt-2"
-          >
-            {isSubmitting ? 'Registering...' : 'Register'}
+          <Button type="submit" className="w-full mt-2">
+            {isSubmitting ? 'Logging...' : 'Login'}
           </Button>
         </form>
       </Form>
       <p className="text-sm text-gray-500 text-center mt-5">
-        Already have an account?{' '}
-        <Link href="/login" className="text-primary font-medium">
-          Login
+        Do not have any account?{' '}
+        <Link href="/register" className="text-primary font-medium">
+          Please Register
         </Link>
       </p>
     </div>
   );
 };
 
-export default RegisterForm;
+export default LoginForm;
