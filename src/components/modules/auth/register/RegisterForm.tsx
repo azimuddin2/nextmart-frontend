@@ -38,6 +38,7 @@ const RegisterForm = () => {
       const res = await registerUser(data);
       if (res.success) {
         toast.success(res.message);
+        form.reset();
       } else {
         toast.error(res.message);
       }
@@ -47,7 +48,7 @@ const RegisterForm = () => {
   };
 
   return (
-    <div className="max-w-lg flex-grow bg-white p-8 rounded-[12px]">
+    <div className="max-w-lg flex-grow bg-white p-6 lg:p-8 rounded-[12px]">
       <div className="flex items-center space-x-4 border-b mb-4 pb-3">
         <Link href="/">
           <Image src={logo} alt="Logo" width="80" height="80" />

@@ -11,6 +11,7 @@ import {
   SelectValue,
 } from '../ui/select';
 import { Input } from '../ui/input';
+import Link from 'next/link';
 
 const Navbar = () => {
   return (
@@ -29,6 +30,9 @@ const Navbar = () => {
             <Button variant="outline" className="rounded-full p-0 size-10">
               <ShoppingBag />
             </Button>
+            <Link href="/login">
+              <Button variant="outline">Login</Button>
+            </Link>
           </nav>
         </div>
 
@@ -66,6 +70,11 @@ const Navbar = () => {
             <Button variant="outline" className="rounded-full p-0 size-10">
               <ShoppingBag />
             </Button>
+            <Link href="/login">
+              <Button variant="outline" className="">
+                Login
+              </Button>
+            </Link>
           </nav>
         </div>
       </div>

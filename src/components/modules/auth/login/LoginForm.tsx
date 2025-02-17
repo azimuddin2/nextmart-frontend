@@ -16,8 +16,11 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Eye, EyeOff } from 'lucide-react';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { loginSchema } from './LoginValidation';
 import { Label } from '@/components/ui/label';
+import { loginSchema } from './loginValidation';
+import { Checkbox } from '@/components/ui/checkbox';
+import { loginUser } from '@/services/AuthService';
+import { toast } from 'sonner';
 
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -31,19 +34,20 @@ const LoginForm = () => {
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
-      // const res = await registerUser(data);
-      // if (res.success) {
-      //     toast.success(res.message);
-      // } else {
-      //     toast.error(res.message);
-      // }
+      const res = await loginUser(data);
+      if (res.success) {
+        toast.success(res.message);
+        form.reset();
+      } else {
+        toast.error(res.message);
+      }
     } catch (error: any) {
       console.error(error);
     }
   };
 
   return (
-    <div className="max-w-lg flex-grow bg-white p-8 rounded-[12px]">
+    <div className="max-w-lg flex-grow bg-white p-6 lg:p-8 rounded-[12px]">
       <div className="flex items-center space-x-4 border-b mb-4 pb-3">
         <Link href="/">
           <Image src={logo} alt="Logo" width="80" height="80" />
@@ -110,11 +114,14 @@ const LoginForm = () => {
             )}
           />
 
-          <div>
+          <div className="flex justify-between items-center mt-6 mb-2">
             <div className="flex items-center space-x-2">
-              <Checkbox id="terms" />
-              <Label htmlFor="terms">Remember Me</Label>
+              <Checkbox id="terms" className="rounded-[4px]" />
+              <Label className="text-sm" htmlFor="terms">
+                Remember Me
+              </Label>
             </div>
+            <span className="text-gray-500 text-sm">Forgot your password?</span>
           </div>
 
           <Button type="submit" className="w-full mt-2">
