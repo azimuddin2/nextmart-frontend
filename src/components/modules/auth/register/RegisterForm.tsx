@@ -15,7 +15,7 @@ import logo from '@/assets/icons/logo.svg';
 import Link from 'next/link';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { registrationSchema } from './registerValidation';
-import { registerUser } from '@/services/AuthService';
+import { registerUser } from '@/services/Auth';
 import { toast } from 'sonner';
 import { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';

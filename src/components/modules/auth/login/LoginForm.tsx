@@ -19,7 +19,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Label } from '@/components/ui/label';
 import { loginSchema } from './loginValidation';
 import { Checkbox } from '@/components/ui/checkbox';
-import { loginUser, reCaptchaTokenVerification } from '@/services/AuthService';
+import { loginUser, reCaptchaTokenVerification } from '@/services/Auth';
 import { toast } from 'sonner';
 import ReCAPTCHA from 'react-google-recaptcha';
 

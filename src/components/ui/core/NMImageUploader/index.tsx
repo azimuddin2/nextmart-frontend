@@ -1,19 +1,21 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import { Input } from '../../input';
 import { ImageUp } from 'lucide-react';
-import Image from 'next/image';
+import { cn } from '@/lib/utils';
 
 type TImageUploaderProps = {
-  imageFiles: File[] | [];
+  label?: string;
+  className?: string;
   setImageFiles: Dispatch<SetStateAction<File[] | []>>;
+  setImagePreview: Dispatch<SetStateAction<[] | string[]>>;
 };
 
 const NMImageUploader = ({
-  imageFiles,
+  label = 'Upload Images',
+  className,
   setImageFiles,
+  setImagePreview,
 }: TImageUploaderProps) => {
-  const [imagePreview, setImagePreview] = useState<string[] | []>([]);
-
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files![0];
     setImageFiles((prev) => [...prev, file]);
@@ -30,7 +32,12 @@ const NMImageUploader = ({
   };
 
   return (
-    <div className="w-full">
+    <div
+      className={cn(
+        'flex justify-center flex-col items-center w-full gap-4',
+        className,
+      )}
+    >
       <Input
         onChange={handleImageChange}
         type="file"
@@ -45,15 +52,9 @@ const NMImageUploader = ({
       >
         <p className="text-center">
           <ImageUp size={30} className="text-primary mx-auto mb-2" />
-          <span>Upload Logo</span>
+          <span>{label}</span>
         </p>
       </label>
-
-      <div>
-        {imagePreview.map((preview, idx) => (
-          <Image src={preview} key={idx} alt="Logo" width={50} height={50} />
-        ))}
-      </div>
     </div>
   );
 };

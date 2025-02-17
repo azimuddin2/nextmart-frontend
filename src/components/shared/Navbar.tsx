@@ -29,7 +29,7 @@ import {
 import { Input } from '../ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import Link from 'next/link';
-import { logout } from '@/services/AuthService';
+import { logout } from '@/services/Auth';
 import { useUser } from '@/context/UserContext';
 
 const Navbar = () => {
@@ -51,9 +51,11 @@ const Navbar = () => {
 
       {user ? (
         <>
-          <Link href="/create-shop">
-            <Button variant="outline">Create Shop</Button>
-          </Link>
+          {user?.hasShop === false && (
+            <Link href="/create-shop">
+              <Button>Create Shop</Button>
+            </Link>
+          )}
           <DropdownMenu>
             <DropdownMenuTrigger>
               <Avatar>
@@ -114,12 +116,12 @@ const Navbar = () => {
     <header className="border-b w-full lg:px-5">
       <div className="container lg:flex justify-between items-center mx-auto h-28 lg:h-20 px-3">
         <div className="flex justify-between items-center mb-2">
-          <div className="flex items-center">
+          <Link href="/" className="flex items-center">
             <Image src={logo} alt="Logo" width="60" height="60" />
             <span className="text-md lg:text-xl font-semibold lg:ml-1">
               Next Mart
             </span>
-          </div>
+          </Link>
           <div className="lg:hidden mt-1">{navOptions}</div>
         </div>
 
