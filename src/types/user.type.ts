@@ -13,6 +13,7 @@ export interface IUser {
   name: string;
   email: string;
   role: 'user' | 'admin';
+  image?: string;
   hasShop?: boolean;
   isActive?: boolean;
   otpToken?: any;

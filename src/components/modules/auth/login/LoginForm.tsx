@@ -19,11 +19,14 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Label } from '@/components/ui/label';
 import { loginSchema } from './loginValidation';
 import { Checkbox } from '@/components/ui/checkbox';
-import { loginUser } from '@/services/AuthService';
+import { loginUser, reCaptchaTokenVerification } from '@/services/AuthService';
 import { toast } from 'sonner';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [reCaptchaStatus, setReCaptchaStatus] = useState(false);
+
   const form = useForm({
     resolver: zodResolver(loginSchema),
   });
@@ -31,6 +34,17 @@ const LoginForm = () => {
   const {
     formState: { isSubmitting },
   } = form;
+
+  const handleReCaptcha = async (value: string | null) => {
+    try {
+      const res = await reCaptchaTokenVerification(value!);
+      if (res?.success) {
+        setReCaptchaStatus(true);
+      }
+    } catch (err: any) {
+      console.error(err);
+    }
+  };
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
@@ -114,7 +128,15 @@ const LoginForm = () => {
             )}
           />
 
-          <div className="flex justify-between items-center mt-6 mb-2">
+          <div className="w-full flex mt-4">
+            <ReCAPTCHA
+              sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_CLIENT_KEY as string}
+              onChange={handleReCaptcha}
+              className="mx-auto"
+            />
+          </div>
+
+          <div className="flex justify-between items-center mt-4 mb-2">
             <div className="flex items-center space-x-2">
               <Checkbox id="terms" className="rounded-[4px]" />
               <Label className="text-sm" htmlFor="terms">
@@ -124,7 +146,11 @@ const LoginForm = () => {
             <span className="text-gray-500 text-sm">Forgot your password?</span>
           </div>
 
-          <Button type="submit" className="w-full mt-2">
+          <Button
+            disabled={reCaptchaStatus ? false : true}
+            type="submit"
+            className="w-full mt-2"
+          >
             {isSubmitting ? 'Logging...' : 'Login'}
           </Button>
         </form>
