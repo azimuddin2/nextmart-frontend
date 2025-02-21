@@ -1,4 +1,5 @@
 'use client';
+
 import { Button } from '../ui/button';
 import {
   Heart,
@@ -86,15 +87,17 @@ const Navbar = () => {
                 </div>
               </div>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="rounded-[5px]">
+              <DropdownMenuItem className="rounded-[5px] cursor-pointer">
                 <User />
                 <span>Profile</span>
               </DropdownMenuItem>
-              <DropdownMenuItem className="rounded-[5px]">
-                <LayoutDashboard />
-                <span>Dashboard</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="rounded-[5px]">
+              <Link href={`${user?.role}/dashboard`}>
+                <DropdownMenuItem className="rounded-[5px] cursor-pointer">
+                  <LayoutDashboard />
+                  <span>Dashboard</span>
+                </DropdownMenuItem>
+              </Link>
+              <DropdownMenuItem className="rounded-[5px] cursor-pointer">
                 <Store />
                 <span>My Shop</span>
               </DropdownMenuItem>
