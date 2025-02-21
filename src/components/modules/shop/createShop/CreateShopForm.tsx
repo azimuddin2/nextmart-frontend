@@ -228,7 +228,7 @@ const CreateShopForm = () => {
                     </FormLabel>
                     <FormControl>
                       <Textarea
-                        className="h-36 rounded-[12px]"
+                        className="h-36"
                         {...field}
                         value={field.value || ''}
                       />

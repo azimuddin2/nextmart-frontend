@@ -48,7 +48,7 @@ const NMImageUploader = ({
       />
       <label
         htmlFor="image-uploader"
-        className="w-full h-36 md:size-36 flex items-center justify-center border-2 border-dashed border-gray-300 cursor-pointer text-center text-sm text-gray-500 hover:bg-gray-50 transition rounded-[12px]"
+        className="w-full h-36 md:size-36 flex items-center justify-center border-2 border-dashed border-gray-300 cursor-pointer text-center text-sm text-gray-500 hover:bg-gray-50 transition rounded-lg"
       >
         <p className="text-center">
           <ImageUp size={30} className="text-primary mx-auto mb-2" />
