@@ -53,10 +53,10 @@ const CreateShopForm = () => {
       formData.append('logo', imageFiles[0]);
 
       const res = await createShop(formData);
-      if (res.success) {
-        toast.success(res.message);
+      if (res?.success) {
+        toast.success(res?.message);
       } else {
-        toast.error(res.message);
+        toast.error(res?.message);
       }
     } catch (error: any) {
       console.error(error);

@@ -22,8 +22,10 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { createCategorySchema } from './categoryValidation';
+import { createCategory } from '@/services/Category';
+import { toast } from 'sonner';
 
 const CreateCategoryModal = () => {
   const [imageFiles, setImageFiles] = useState<File[] | []>([]);
@@ -37,7 +39,24 @@ const CreateCategoryModal = () => {
     formState: { isSubmitting },
   } = form;
 
-  const onSubmit = () => {};
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    try {
+      const formData = new FormData();
+      formData.append('data', JSON.stringify(data));
+      formData.append('icon', imageFiles[0]);
+
+      const res = await createCategory(formData);
+      if (res?.success) {
+        toast.success(res?.message);
+        form.reset();
+      } else {
+        toast.error(res?.message);
+      }
+    } catch (error) {
+      toast.error('Something went wrong.');
+      console.error(error);
+    }
+  };
 
   return (
     <Dialog>
@@ -48,7 +67,6 @@ const CreateCategoryModal = () => {
         <DialogHeader>
           <DialogTitle>Create Category</DialogTitle>
         </DialogHeader>
-
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <div className="grid grid-cols-1 gap-4">
@@ -65,7 +83,6 @@ const CreateCategoryModal = () => {
                   </FormItem>
                 )}
               />
-
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
                 <div className="md:col-span-2">
                   <FormField
@@ -105,7 +122,6 @@ const CreateCategoryModal = () => {
                   )}
                 </div>
               </div>
-
               <Button type="submit" className="w-full">
                 {isSubmitting ? 'Saveing....' : 'Save'}
               </Button>
