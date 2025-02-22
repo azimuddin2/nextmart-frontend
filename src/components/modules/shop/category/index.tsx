@@ -6,12 +6,50 @@ import { NMTable } from '@/components/ui/core/NMTable';
 import { ColumnDef } from '@tanstack/react-table';
 import Image from 'next/image';
 import { Trash2 } from 'lucide-react';
+import { useState } from 'react';
+import { toast } from 'sonner';
+import DeleteConfirmationModal from '@/components/ui/core/NMModal/DeleteConfirmationModal';
+import { Badge } from '@/components/ui/badge';
+import { FaRegEdit } from 'react-icons/fa';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
+import { deleteCategory } from '@/services/Category';
 
 type TCategoriesProps = {
   categories: ICategory[];
 };
 
 const ManageCategories = ({ categories }: TCategoriesProps) => {
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [selectedItem, setSelectedItem] = useState<string | null>(null);
+
+  const handleDelete = (data: ICategory) => {
+    setSelectedId(data?._id);
+    setSelectedItem(data?.name);
+    setModalOpen(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    try {
+      if (selectedId) {
+        const res = await deleteCategory(selectedId);
+        if (res.success) {
+          toast.success(res.message);
+          setModalOpen(false);
+        } else {
+          toast.error(res.message);
+        }
+      }
+    } catch (err: any) {
+      console.error(err?.message);
+    }
+  };
+
   const columns: ColumnDef<ICategory>[] = [
     {
       accessorKey: 'name',
@@ -34,13 +72,13 @@ const ManageCategories = ({ categories }: TCategoriesProps) => {
       cell: ({ row }) => (
         <div>
           {row.original.isActive ? (
-            <p className="text-green-500 border bg-green-100 w-14 text-center px-1 rounded">
+            <Badge className="text-green-500 border bg-green-100 rounded-sm hover:bg-green-100">
               True
-            </p>
+            </Badge>
           ) : (
-            <p className="text-red-500 border bg-red-100 w-14 text-center px-1 rounded">
+            <Badge className="text-red-500 border bg-red-100 hover:bg-red-100 rounded-sm">
               False
-            </p>
+            </Badge>
           )}
         </div>
       ),
@@ -49,13 +87,33 @@ const ManageCategories = ({ categories }: TCategoriesProps) => {
       accessorKey: 'action',
       header: () => <div>Action</div>,
       cell: ({ row }) => (
-        <button
-          className="text-red-500"
-          title="Delete"
-          // onClick={() => handleDelete(row.original)}
-        >
-          <Trash2 className="w-5 h-5" />
-        </button>
+        <div>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <FaRegEdit
+                  // onClick={() => handleUpdate(row.original)}
+                  size={20}
+                  className="text-green-500 mr-2"
+                />
+              </TooltipTrigger>
+              <TooltipContent>Edit</TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <Trash2
+                  onClick={() => handleDelete(row.original)}
+                  size={20}
+                  className="text-red-500"
+                />
+              </TooltipTrigger>
+              <TooltipContent>Delete</TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
       ),
     },
   ];
@@ -67,6 +125,12 @@ const ManageCategories = ({ categories }: TCategoriesProps) => {
         <CreateCategoryModal />
       </div>
       <NMTable data={categories} columns={columns} />
+      <DeleteConfirmationModal
+        name={selectedItem}
+        isOpen={isModalOpen}
+        onOpenChange={setModalOpen}
+        onConfirm={handleDeleteConfirm}
+      />
     </div>
   );
 };
