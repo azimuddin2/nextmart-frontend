@@ -69,7 +69,7 @@ const CreateShopForm = () => {
         <Image src={logo} alt="Logo" width="80" height="80" />
         <div>
           <h1 className="text-xl font-semibold">Create Your Shop</h1>
-          <p className="font-extralight text-sm text-gray-500">
+          <p className="font-extralight text-sm text-gray-600">
             Join us today and start your journey!
           </p>
         </div>

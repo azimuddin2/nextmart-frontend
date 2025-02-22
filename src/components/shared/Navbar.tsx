@@ -68,7 +68,7 @@ const Navbar = () => {
             <DropdownMenuTrigger>
               <Avatar>
                 <AvatarImage src={user?.image} />
-                <AvatarFallback className="bg-primary text-white font-medium">
+                <AvatarFallback className="bg-primary text-white text-xl">
                   {user?.name.slice(0, 1)}
                 </AvatarFallback>
               </Avatar>
@@ -77,7 +77,7 @@ const Navbar = () => {
               <div>
                 <Avatar className="mx-auto w-12 h-12">
                   <AvatarImage src={user?.image} />
-                  <AvatarFallback className="bg-primary text-white font-medium text-2xl">
+                  <AvatarFallback className="bg-primary text-white text-2xl">
                     {user?.name.slice(0, 1)}
                   </AvatarFallback>
                 </Avatar>
@@ -129,7 +129,7 @@ const Navbar = () => {
           <Link href="/" className="flex items-center">
             <Image src={logo} alt="Logo" width="60" height="60" />
             <span className="text-md lg:text-xl font-semibold lg:ml-1">
-              Next Mart
+              NextMart
             </span>
           </Link>
           <div className="lg:hidden mt-1">{navOptions}</div>

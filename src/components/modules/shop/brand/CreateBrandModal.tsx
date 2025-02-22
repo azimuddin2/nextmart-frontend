@@ -25,6 +25,7 @@ import ImagePreviewer from '@/components/ui/core/NMImageUploader/ImagePreviewer'
 import NMImageUploader from '@/components/ui/core/NMImageUploader';
 import { createBrand } from '@/services/Brand';
 import { toast } from 'sonner';
+import { IoMdAdd } from 'react-icons/io';
 
 const CreateBrandModal = () => {
   const [isModalOpen, setModalOpen] = useState(false);
@@ -62,7 +63,10 @@ const CreateBrandModal = () => {
   return (
     <Dialog open={isModalOpen} onOpenChange={setModalOpen}>
       <DialogTrigger asChild>
-        <Button>Create Brand</Button>
+        <Button>
+          <span>Create Brand</span>
+          <IoMdAdd size={24} />
+        </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

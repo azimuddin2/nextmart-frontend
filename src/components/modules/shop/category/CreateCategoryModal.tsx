@@ -26,8 +26,10 @@ import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { createCategorySchema } from './categoryValidation';
 import { createCategory } from '@/services/Category';
 import { toast } from 'sonner';
+import { IoMdAdd } from 'react-icons/io';
 
 const CreateCategoryModal = () => {
+  const [isModalOpen, setModalOpen] = useState(false);
   const [imageFiles, setImageFiles] = useState<File[] | []>([]);
   const [imagePreview, setImagePreview] = useState<string[] | []>([]);
 
@@ -49,6 +51,7 @@ const CreateCategoryModal = () => {
       if (res?.success) {
         toast.success(res?.message);
         form.reset();
+        setModalOpen(false);
       } else {
         toast.error(res?.message);
       }
@@ -59,9 +62,12 @@ const CreateCategoryModal = () => {
   };
 
   return (
-    <Dialog>
+    <Dialog open={isModalOpen} onOpenChange={setModalOpen}>
       <DialogTrigger asChild>
-        <Button>Create Category</Button>
+        <Button>
+          <span>Create Category</span>
+          <IoMdAdd size={24} />
+        </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

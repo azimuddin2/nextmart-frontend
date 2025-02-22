@@ -59,8 +59,8 @@ const ManageBrands = ({ brands }: TBrandsProps) => {
           <Image
             src={row.original.logo}
             alt={row.original.name}
-            width={50}
-            height={50}
+            width={30}
+            height={30}
           />
           <span className="truncate">{row.original.name}</span>
         </div>

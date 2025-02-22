@@ -121,7 +121,7 @@ const ManageCategories = ({ categories }: TCategoriesProps) => {
   return (
     <div>
       <div className="flex items-center justify-between mb-3">
-        <h2 className="lg:text-2xl font-medium">Manage Categories</h2>
+        <h2 className="text-xl font-medium">Manage Categories</h2>
         <CreateCategoryModal />
       </div>
       <NMTable data={categories} columns={columns} />

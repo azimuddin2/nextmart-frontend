@@ -15,6 +15,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import Image from 'next/image';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -32,14 +33,17 @@ export function NMTable<TData, TValue>({
   });
 
   return (
-    <div className="rounded-md border bg-[#FAFAFA]">
+    <div className="rounded-md border-0 bg-[#FAFAFA]">
       <Table>
-        <TableHeader>
+        <TableHeader className="bg-gray-100">
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 return (
-                  <TableHead key={header.id}>
+                  <TableHead
+                    key={header.id}
+                    className="font-bold text-gray-600"
+                  >
                     {header.isPlaceholder
                       ? null
                       : flexRender(
@@ -68,7 +72,14 @@ export function NMTable<TData, TValue>({
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
+              <TableCell colSpan={columns.length} className="h-60 text-center">
+                <Image
+                  src="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
+                  alt="No results"
+                  width={100}
+                  height={100}
+                  className="mx-auto"
+                />
                 No results.
               </TableCell>
             </TableRow>
