@@ -26,7 +26,7 @@ import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { createCategorySchema } from './categoryValidation';
 import { createCategory } from '@/services/Category';
 import { toast } from 'sonner';
-import { IoMdAdd } from 'react-icons/io';
+import { Plus } from 'lucide-react';
 
 const CreateCategoryModal = () => {
   const [isModalOpen, setModalOpen] = useState(false);
@@ -66,7 +66,7 @@ const CreateCategoryModal = () => {
       <DialogTrigger asChild>
         <Button>
           <span>Create Category</span>
-          <IoMdAdd size={24} />
+          <Plus />
         </Button>
       </DialogTrigger>
       <DialogContent>
