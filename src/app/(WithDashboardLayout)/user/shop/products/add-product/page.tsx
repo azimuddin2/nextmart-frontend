@@ -1,9 +1,9 @@
-import React from 'react';
+import AddProductForm from '@/components/modules/shop/product/AddProductForm';
 
 const AddProduct = () => {
   return (
-    <div>
-      <h2>Add Product</h2>
+    <div className="flex justify-center items-center">
+      <AddProductForm />
     </div>
   );
 };
