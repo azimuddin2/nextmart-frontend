@@ -14,6 +14,7 @@ import { Eye, Plus, Trash2 } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React from 'react';
+import { FaRegEdit } from 'react-icons/fa';
 
 type TProductsProps = {
   products: IProduct[];
@@ -73,25 +74,31 @@ const ManageProducts = ({ products }: TProductsProps) => {
       header: 'Action',
       cell: ({ row }) => (
         <div className="flex items-center space-x-3">
-          <button
-            className="text-gray-500 hover:text-blue-500"
-            title="View"
-            // onClick={() => handleView(row.original)}
-          >
-            <Eye className="w-5 h-5" />
-          </button>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <Eye
+                  // onClick={() => handleView(row.original)}
+                  size={20}
+                  className="text-blue-500"
+                />
+              </TooltipTrigger>
+              <TooltipContent>View</TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
 
-          {/* <button
-                        className="text-gray-500 hover:text-green-500"
-                        title="Edit"
-                        onClick={() =>
-                            router.push(
-                                `/user/shop/products/update-product/${row.original._id}`
-                            )
-                        }
-                    >
-                        <Edit className="w-5 h-5" />
-                    </button> */}
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <FaRegEdit
+                  // onClick={() => handleUpdate(row.original)}
+                  size={20}
+                  className="text-green-500"
+                />
+              </TooltipTrigger>
+              <TooltipContent>Edit</TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
 
           <TooltipProvider>
             <Tooltip>

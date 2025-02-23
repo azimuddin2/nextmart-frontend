@@ -3,7 +3,7 @@
 import { revalidateTag } from 'next/cache';
 import { cookies } from 'next/headers';
 
-export const createProduct = async (data: FormData) => {
+export const addProduct = async (data: FormData) => {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/product`, {
       method: 'POST',

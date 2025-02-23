@@ -21,12 +21,28 @@ import { Textarea } from '@/components/ui/textarea';
 import NMImageUploader from '@/components/ui/core/NMImageUploader';
 import ImagePreviewer from '@/components/ui/core/NMImageUploader/ImagePreviewer';
 import { Button } from '@/components/ui/button';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Plus } from 'lucide-react';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { IBrand, ICategory } from '@/types';
+import { getAllCategories } from '@/services/Category';
+import { getAllBrands } from '@/services/Brand';
+import { addProduct } from '@/services/Product';
+import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
 
 const AddProductForm = () => {
   const [imageFiles, setImageFiles] = useState<File[] | []>([]);
   const [imagePreview, setImagePreview] = useState<string[] | []>([]);
+  const [categories, setCategories] = useState<ICategory[] | []>([]);
+  const [brands, setBrands] = useState<IBrand[] | []>([]);
+  const router = useRouter();
 
   const form = useForm({
     defaultValues: {
@@ -46,6 +62,20 @@ const AddProductForm = () => {
   const {
     formState: { isSubmitting },
   } = form;
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const [categoriesData, brandsData] = await Promise.all([
+        getAllCategories(),
+        getAllBrands(),
+      ]);
+
+      setCategories(categoriesData?.data);
+      setBrands(brandsData?.data);
+    };
+
+    fetchData();
+  }, []);
 
   // Dynamic Color Input Fields
   const { append: appendColor, fields: colorFields } = useFieldArray({
@@ -68,8 +98,63 @@ const AddProductForm = () => {
     appendKeyFeatures({ value: '' });
   };
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    console.log(data);
+  // Dynamic Specification Input Fields
+  const { append: appendSpecification, fields: specificationFields } =
+    useFieldArray({
+      control: form.control,
+      name: 'specification',
+    });
+
+  const addSpecification = () => {
+    appendSpecification({ key: '', value: '' });
+  };
+
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    const availableColors = data?.availableColors.map(
+      (color: { value: string }) => color.value,
+    );
+
+    const keyFeatures = data?.keyFeatures.map(
+      (feature: { value: string }) => feature.value,
+    );
+
+    const specification: { [key: string]: string } = {};
+
+    data?.specification.forEach(
+      (item: { key: string; value: string }) =>
+        (specification[item.key] = item.value),
+    );
+
+    const modifiedData = {
+      ...data,
+      availableColors,
+      keyFeatures,
+      specification,
+      price: parseFloat(data?.price),
+      stock: parseInt(data?.stock),
+      weight: parseFloat(data?.weight),
+    };
+
+    const formData = new FormData();
+
+    formData.append('data', JSON.stringify(modifiedData));
+
+    for (const file of imageFiles) {
+      formData.append('images', file);
+    }
+
+    try {
+      const res = await addProduct(formData);
+      if (res?.success) {
+        toast.success(res?.message);
+        router.push('/user/shop/products');
+      } else {
+        toast.error(res?.message);
+        console.log(res);
+      }
+    } catch (error: any) {
+      console.error(error);
+    }
   };
 
   return (
@@ -77,7 +162,7 @@ const AddProductForm = () => {
       <div className="flex items-center space-x-4 border-b mb-4 pb-3">
         <Image src={logo} alt="Logo" width="80" height="80" />
         <div>
-          <h1 className="text-xl font-semibold">Add Product</h1>
+          <h1 className="text-2xl font-semibold">Add Product</h1>
           <p className="font-extralight text-sm text-gray-700">
             Today and start your journey!
           </p>
@@ -87,7 +172,9 @@ const AddProductForm = () => {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="flex justify-between items-center border-b py-3 my-5">
-            <p className="text-primary font-bold text-xl">Basic Information</p>
+            <p className="text-primary font-semibold text-xl">
+              Basic Information
+            </p>
           </div>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <FormField
@@ -126,7 +213,7 @@ const AddProductForm = () => {
               )}
             />
 
-            {/* <FormField
+            <FormField
               control={form.control}
               name="category"
               render={({ field }) => (
@@ -136,7 +223,7 @@ const AddProductForm = () => {
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                   >
-                    <FormControl>
+                    <FormControl className="bg-white">
                       <SelectTrigger>
                         <SelectValue placeholder="Select Product Category" />
                       </SelectTrigger>
@@ -149,13 +236,12 @@ const AddProductForm = () => {
                       ))}
                     </SelectContent>
                   </Select>
-
                   <FormMessage />
                 </FormItem>
               )}
-            /> */}
+            />
 
-            {/* <FormField
+            <FormField
               control={form.control}
               name="brand"
               render={({ field }) => (
@@ -165,24 +251,23 @@ const AddProductForm = () => {
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                   >
-                    <FormControl>
+                    <FormControl className="bg-white">
                       <SelectTrigger>
                         <SelectValue placeholder="Select Product Brand" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {brands.map((brand) => (
+                      {brands?.map((brand) => (
                         <SelectItem key={brand?._id} value={brand?._id}>
                           {brand?.name}
                         </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
-
                   <FormMessage />
                 </FormItem>
               )}
-            /> */}
+            />
 
             <FormField
               control={form.control}
@@ -243,7 +328,7 @@ const AddProductForm = () => {
 
           <div>
             <div className="flex justify-between items-center border-t border-b py-3 my-5">
-              <p className="text-primary font-bold text-xl">Images</p>
+              <p className="text-primary font-semibold text-xl">Images</p>
             </div>
             <div className="flex gap-4 ">
               <NMImageUploader
@@ -263,10 +348,11 @@ const AddProductForm = () => {
 
           <div>
             <div className="flex justify-between items-center border-t border-b py-3 my-5">
-              <p className="text-primary font-bold text-xl">Available Colors</p>
+              <p className="text-primary font-semibold text-xl">
+                Available Colors
+              </p>
               <Button
-                variant="outline"
-                className="size-8 bg-primary hover:bg-primary"
+                className="size-8 bg-primary"
                 onClick={addColor}
                 type="button"
               >
@@ -301,17 +387,15 @@ const AddProductForm = () => {
 
           <div>
             <div className="flex justify-between items-center border-t border-b py-3 my-5">
-              <p className="text-primary font-bold text-xl">Key Features</p>
+              <p className="text-primary font-semibold text-xl">Key Features</p>
               <Button
                 onClick={addKeyFeatures}
-                variant="outline"
-                className="size-8 bg-primary hover:bg-primary"
+                className="size-8 bg-primary"
                 type="button"
               >
                 <Plus className="text-white" />
               </Button>
             </div>
-
             <div className="my-5">
               {keyFeaturesFields.map((featureField, index) => (
                 <div key={featureField.id}>
@@ -319,7 +403,7 @@ const AddProductForm = () => {
                     control={form.control}
                     name={`keyFeatures.${index}.value`}
                     render={({ field }) => (
-                      <FormItem className="mb-2">
+                      <FormItem className="mb-3">
                         <FormLabel>Key Feature {index + 1}</FormLabel>
                         <FormControl>
                           <Input
@@ -337,23 +421,23 @@ const AddProductForm = () => {
             </div>
           </div>
 
-          {/* 
           <div>
             <div className="flex justify-between items-center border-t border-b py-3 my-5">
-              <p className="text-primary font-bold text-xl">Specification</p>
+              <p className="text-primary font-semibold text-xl">
+                Specification
+              </p>
               <Button
-                onClick={addSpec}
-                variant="outline"
-                className="size-10"
+                onClick={addSpecification}
+                className="size-8 bg-primary"
                 type="button"
               >
-                <Plus className="text-primary" />
+                <Plus className="text-white" />
               </Button>
             </div>
 
-            {specFields.map((specField, index) => (
+            {specificationFields.map((specificationField, index) => (
               <div
-                key={specField.id}
+                key={specificationField.id}
                 className="grid grid-cols-1 gap-4 md:grid-cols-2 my-5"
               >
                 <FormField
@@ -363,7 +447,11 @@ const AddProductForm = () => {
                     <FormItem>
                       <FormLabel>Feature name {index + 1}</FormLabel>
                       <FormControl>
-                        <Input {...field} value={field.value || ""} />
+                        <Input
+                          {...field}
+                          value={field.value || ''}
+                          className="bg-white"
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -376,7 +464,11 @@ const AddProductForm = () => {
                     <FormItem>
                       <FormLabel>Feature Description {index + 1}</FormLabel>
                       <FormControl>
-                        <Input {...field} value={field.value || ""} />
+                        <Input
+                          {...field}
+                          value={field.value || ''}
+                          className="bg-white"
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -384,7 +476,7 @@ const AddProductForm = () => {
                 />
               </div>
             ))}
-          </div> */}
+          </div>
 
           <Button type="submit" className="mt-5 w-full" disabled={isSubmitting}>
             {isSubmitting ? 'Adding Product.....' : 'Add Product'}
