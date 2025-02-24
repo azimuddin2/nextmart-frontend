@@ -123,8 +123,8 @@ const Navbar = () => {
   );
 
   return (
-    <header className="border-b w-full lg:px-5">
-      <div className="container lg:flex justify-between items-center mx-auto h-28 lg:h-20 px-3">
+    <header className="border-b">
+      <div className="max-w-screen-xl px-3 lg:px-5 lg:flex justify-between items-center mx-auto h-28 lg:h-20">
         <div className="flex justify-between items-center mb-2">
           <Link href="/" className="flex items-center">
             <Image src={logo} alt="Logo" width="60" height="60" />
