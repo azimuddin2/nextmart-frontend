@@ -78,7 +78,11 @@ const ManageProducts = ({ products }: TProductsProps) => {
             <Tooltip>
               <TooltipTrigger>
                 <Eye
-                  // onClick={() => handleView(row.original)}
+                  onClick={() =>
+                    router.push(
+                      `/user/shop/products/view-product/${row.original._id}`,
+                    )
+                  }
                   size={20}
                   className="text-blue-500"
                 />
@@ -91,7 +95,11 @@ const ManageProducts = ({ products }: TProductsProps) => {
             <Tooltip>
               <TooltipTrigger>
                 <FaRegEdit
-                  // onClick={() => handleUpdate(row.original)}
+                  onClick={() =>
+                    router.push(
+                      `/user/shop/products/update-product/${row.original._id}`,
+                    )
+                  }
                   size={20}
                   className="text-green-500"
                 />
