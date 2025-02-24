@@ -1,9 +1,13 @@
+import Category from '@/components/modules/home/Category';
+import FeaturedProducts from '@/components/modules/home/FeaturedProducts';
 import HeroSection from '@/components/modules/home/HeroSection';
 
 const HomePage = () => {
   return (
-    <div className="max-w-screen-xl mx-auto px-3 lg:px-5">
+    <div>
       <HeroSection />
+      <Category />
+      <FeaturedProducts />
     </div>
   );
 };
