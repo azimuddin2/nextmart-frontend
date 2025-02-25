@@ -28,7 +28,7 @@ import { toast } from 'sonner';
 import { Plus } from 'lucide-react';
 
 const CreateBrandModal = () => {
-  const [isModalOpen, setModalOpen] = useState(false);
+  const [isModalOpen, setModalOpen] = useState<boolean>(false);
   const [imageFiles, setImageFiles] = useState<File[] | []>([]);
   const [imagePreview, setImagePreview] = useState<string[] | []>([]);
 

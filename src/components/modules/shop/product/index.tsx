@@ -1,6 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
 import { NMTable } from '@/components/ui/core/NMTable';
 import {
   Tooltip,
@@ -13,8 +14,9 @@ import { ColumnDef } from '@tanstack/react-table';
 import { Eye, Plus, Trash2 } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import React from 'react';
+import React, { useState } from 'react';
 import { FaRegEdit } from 'react-icons/fa';
+import DiscountModal from './DiscountModal';
 
 type TProductsProps = {
   products: IProduct[];
@@ -22,8 +24,41 @@ type TProductsProps = {
 
 const ManageProducts = ({ products }: TProductsProps) => {
   const router = useRouter();
+  const [selectedIds, setSelectedIds] = useState<string[] | []>([]);
 
   const columns: ColumnDef<IProduct>[] = [
+    {
+      id: 'select',
+      header: ({ table }) => (
+        <Checkbox
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && 'indeterminate')
+          }
+          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+          aria-label="Select all"
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={(value) => {
+            if (value) {
+              setSelectedIds((prev) => [...prev, row.original._id]);
+            } else {
+              setSelectedIds(
+                selectedIds.filter((id) => id !== row.original._id),
+              );
+            }
+
+            row.toggleSelected(!!value);
+          }}
+          aria-label="Select row"
+        />
+      ),
+      enableSorting: false,
+      enableHiding: false,
+    },
     {
       accessorKey: 'name',
       header: 'Product Name',
@@ -62,7 +97,7 @@ const ManageProducts = ({ products }: TProductsProps) => {
     },
     {
       accessorKey: 'offerPrice',
-      header: 'Ofter Price',
+      header: 'Offer Price',
       cell: ({ row }) => (
         <span>
           $ {row.original.offerPrice ? row.original.offerPrice.toFixed(2) : '0'}
@@ -134,8 +169,12 @@ const ManageProducts = ({ products }: TProductsProps) => {
             onClick={() => router.push('/user/shop/products/add-product')}
             size="sm"
           >
-            Add Product <Plus />
+            <Plus /> Add Product
           </Button>
+          <DiscountModal
+            selectedIds={selectedIds}
+            setSelectedIds={setSelectedIds}
+          />
         </div>
       </div>
       <NMTable columns={columns} data={products || []} />
