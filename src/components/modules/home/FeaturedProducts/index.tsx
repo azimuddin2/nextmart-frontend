@@ -8,7 +8,7 @@ const FeaturedProducts = async () => {
   const { data: products } = await getAllProducts();
 
   return (
-    <div className="bg-[#f7f7f7] my-12 lg:my-16 py-14">
+    <div className="bg-[#f7f7f7] my-12 lg:my-16 py-20">
       <div className="max-w-screen-xl mx-auto px-3 lg:px-5">
         <div className="flex justify-between items-center mb-5">
           <h2 className="text-xl font-bold">Featured Products</h2>
@@ -19,7 +19,7 @@ const FeaturedProducts = async () => {
           </Link>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {products?.map((product: IProduct, index: number) => (
+          {products?.slice(0, 4)?.map((product: IProduct, index: number) => (
             <ProductCard key={index} product={product} />
           ))}
         </div>
