@@ -9,7 +9,7 @@ const AllProductsPage = async () => {
   const { data: products } = await getAllProducts();
 
   return (
-    <div>
+    <div className="max-w-screen-xl mx-auto px-3 lg:px-5">
       <NMBanner title="All Products" path="Home - Products" />
       <Categories categories={categories} />
       <AllProducts products={products} />

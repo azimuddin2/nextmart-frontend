@@ -15,7 +15,7 @@ type TCategoriesProps = {
 
 const Categories = ({ categories }: TCategoriesProps) => {
   return (
-    <div className="max-w-screen-xl mx-auto px-3 lg:px-5 my-12">
+    <div className="my-12">
       <div className="flex justify-between items-center">
         <h2 className="text-xl font-bold">Featured Collection</h2>
       </div>
