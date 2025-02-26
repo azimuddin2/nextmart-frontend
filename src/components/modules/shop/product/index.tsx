@@ -9,7 +9,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { IProduct } from '@/types';
+import { IMeta, IProduct } from '@/types';
 import { ColumnDef } from '@tanstack/react-table';
 import { Eye, Plus, Trash2 } from 'lucide-react';
 import Image from 'next/image';
@@ -17,12 +17,14 @@ import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { FaRegEdit } from 'react-icons/fa';
 import DiscountModal from './DiscountModal';
+import NMPagination from '@/components/ui/core/NMPagination';
 
 type TProductsProps = {
   products: IProduct[];
+  meta: IMeta;
 };
 
-const ManageProducts = ({ products }: TProductsProps) => {
+const ManageProducts = ({ products, meta }: TProductsProps) => {
   const router = useRouter();
   const [selectedIds, setSelectedIds] = useState<string[] | []>([]);
 
@@ -178,6 +180,7 @@ const ManageProducts = ({ products }: TProductsProps) => {
         </div>
       </div>
       <NMTable columns={columns} data={products || []} />
+      <NMPagination totalPage={meta.totalPage} />
     </div>
   );
 };
