@@ -9,7 +9,7 @@ const ProductCard = ({ product }: { product: IProduct }) => {
   return (
     <Card className="p-4">
       <CardHeader className="relative p-0">
-        <div className="lg:h-52">
+        <div className="h-1/2">
           <Image
             src={
               product?.imageUrls[0] ||

@@ -10,7 +10,7 @@ const FlashSale = async () => {
 
   return (
     <div className="max-w-screen-xl mx-auto px-3 lg:px-5 my-12 lg:my-16 py-14">
-      <div className="flex justify-between items-center mb-5">
+      <div className="flex justify-between items-center mb-6">
         <div className="lg:flex items-center">
           <h2 className="text-xl font-bold mr-8">Flash Sale</h2>
           <CountDown />
