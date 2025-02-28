@@ -28,7 +28,7 @@ export default function Coupon() {
   return (
     <div className="border-2 border-white bg-background brightness-105 rounded-md col-span-4  p-5 w-full ">
       <div className="flex flex-col justify-between w-full h-full">
-        <h1 className="text-2xl font-semibold">Use Coupon code</h1>
+        <h1 className="text-xl font-semibold">Use Coupon code</h1>
         <p className="text-gray-500">Enter your coupon code if you have one.</p>
 
         <Form {...form}>
