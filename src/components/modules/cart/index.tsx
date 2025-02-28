@@ -1,12 +1,15 @@
-import { getAllProducts } from '@/services/Product';
+'use client';
+
 import { IProduct } from '@/types';
 import Image from 'next/image';
 import React from 'react';
 import CartProductCard from './CartProductCard';
 import emptyCart from '@/assets/images/empty-cart.png';
+import { useAppSelector } from '@/redux/hooks';
+import { orderedProductsSelector } from '@/redux/features/cartSlice';
 
-const CartProducts = async () => {
-  const { data: products } = await getAllProducts();
+const CartProducts = () => {
+  const products = useAppSelector(orderedProductsSelector);
 
   return (
     <div className="border-2 grid grid-cols-1 border-white bg-background brightness-105 rounded-md col-span-8 h-full row-span-3 p-3 lg:p-6 space-y-5">

@@ -1,11 +1,21 @@
+'use client';
+
 import Image from 'next/image';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../card';
 import Link from 'next/link';
 import { Heart, ShoppingCart, Star } from 'lucide-react';
 import { Button } from '../button';
 import { IProduct } from '@/types';
+import { useAppDispatch } from '@/redux/hooks';
+import { addToCart } from '@/redux/features/cartSlice';
 
 const ProductCard = ({ product }: { product: IProduct }) => {
+  const dispatch = useAppDispatch();
+
+  const handleAddToCart = (product: IProduct) => {
+    dispatch(addToCart(product));
+  };
+
   return (
     <Card className="p-4">
       <CardHeader className="relative p-0">
@@ -69,6 +79,7 @@ const ProductCard = ({ product }: { product: IProduct }) => {
             Buy Now
           </Button>
           <Button
+            onClick={() => handleAddToCart(product)}
             disabled={product?.stock === 0}
             variant="outline"
             size="sm"

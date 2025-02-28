@@ -1,12 +1,12 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { IProduct } from '@/types';
+import { ICartProduct } from '@/redux/features/cartSlice';
 import { Minus, Plus, Trash2 } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
 
-const CartProductCard = ({ product }: { product: IProduct }) => {
+const CartProductCard = ({ product }: { product: ICartProduct }) => {
   const [quantity, setQuantity] = useState(1);
 
   return (
@@ -47,7 +47,7 @@ const CartProductCard = ({ product }: { product: IProduct }) => {
             >
               <Minus />
             </Button>
-            <p className="font-medium text-lg p-2">{quantity}</p>
+            <p className="font-medium text-lg p-2">{product.orderQuantity}</p>
             <Button
               onClick={() => setQuantity(quantity + 1)}
               variant="outline"
