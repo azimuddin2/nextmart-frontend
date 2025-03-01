@@ -8,12 +8,14 @@ import { Button } from '../button';
 import { IProduct } from '@/types';
 import { useAppDispatch } from '@/redux/hooks';
 import { addToCart } from '@/redux/features/cartSlice';
+import { toast } from 'sonner';
 
 const ProductCard = ({ product }: { product: IProduct }) => {
   const dispatch = useAppDispatch();
 
   const handleAddToCart = (product: IProduct) => {
     dispatch(addToCart(product));
+    toast.success('Product successfully added to cart.');
   };
 
   return (

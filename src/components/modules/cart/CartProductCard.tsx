@@ -1,16 +1,35 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { ICartProduct } from '@/redux/features/cartSlice';
+import {
+  cartToRemoveProduct,
+  decrementOrderQuantity,
+  ICartProduct,
+  incrementOrderQuantity,
+} from '@/redux/features/cartSlice';
+import { useAppDispatch } from '@/redux/hooks';
 import { Minus, Plus, Trash2 } from 'lucide-react';
 import Image from 'next/image';
-import { useState } from 'react';
+import { toast } from 'sonner';
 
 const CartProductCard = ({ product }: { product: ICartProduct }) => {
-  const [quantity, setQuantity] = useState(1);
+  const dispatch = useAppDispatch();
+
+  const handleIncrementQuantity = (id: string) => {
+    dispatch(incrementOrderQuantity(id));
+  };
+
+  const handleDecrementQuantity = (id: string) => {
+    dispatch(decrementOrderQuantity(id));
+  };
+
+  const handleRemoveProduct = (id: string) => {
+    dispatch(cartToRemoveProduct(id));
+    toast.success('Product remove successfully.');
+  };
 
   return (
-    <div className="bg-white rounded-lg flex p-5 gap-5">
+    <div className="bg-white rounded-lg flex p-5 gap-5 mb-3">
       <div className="h-full w-32 rounded-md overflow-hidden">
         <Image
           src={product?.imageUrls?.[0]}
@@ -35,13 +54,13 @@ const CartProductCard = ({ product }: { product: ICartProduct }) => {
         <hr className="my-1" />
         <div className="flex items-center justify-between">
           <h2>
-            Price:
+            Price:$
             {product.offerPrice ? product.offerPrice : product.price}
           </h2>
           <div className="flex items-center gap-2">
             <p className="text-gray-500 font-semibold">Quantity</p>
             <Button
-              onClick={() => setQuantity(quantity > 1 ? quantity - 1 : 1)}
+              onClick={() => handleDecrementQuantity(product._id)}
               variant="outline"
               className="size-8 rounded-sm"
             >
@@ -49,13 +68,17 @@ const CartProductCard = ({ product }: { product: ICartProduct }) => {
             </Button>
             <p className="font-medium text-lg p-2">{product.orderQuantity}</p>
             <Button
-              onClick={() => setQuantity(quantity + 1)}
+              onClick={() => handleIncrementQuantity(product._id)}
               variant="outline"
               className="size-8 rounded-sm"
             >
               <Plus />
             </Button>
-            <Button variant="outline" className="size-8 rounded-sm">
+            <Button
+              onClick={() => handleRemoveProduct(product._id)}
+              variant="outline"
+              className="size-8 rounded-sm"
+            >
               <Trash2 className="text-red-500" />
             </Button>
           </div>

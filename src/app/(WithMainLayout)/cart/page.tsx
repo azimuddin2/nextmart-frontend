@@ -1,5 +1,7 @@
 import CartProducts from '@/components/modules/cart';
 import Coupon from '@/components/modules/cart/Coupon';
+import CustomerInfo from '@/components/modules/cart/CustomerInfo';
+import PaymentDetails from '@/components/modules/cart/PaymentDetails';
 import NMBanner from '@/components/ui/core/NMBanner';
 
 const CartPage = () => {
@@ -9,6 +11,8 @@ const CartPage = () => {
       <div className="grid lg:grid-cols-12 gap-5">
         <CartProducts />
         <Coupon />
+        <CustomerInfo />
+        <PaymentDetails />
       </div>
     </div>
   );
